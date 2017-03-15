@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Random;
+import java.lang.*;
 
 import jsjf.CircularArrayQueue;
 
@@ -6,13 +9,50 @@ public class Main {
 	//Variabler
 	public static int method, n, tempInt;
 	public static boolean perform, estimate;
+	public static int arr[];
 	
 
 	public static void main(String[] args) {
 		//Scan input
 		scanInput();
-		//
+		//Opprett Array
+		makeArray();
 		
+		printuArrayuDesu();
+		
+		performSort();
+		
+		printuArrayuDesu();
+	}
+	
+	private static void makeArray(){
+		Random r = new Random();
+		arr = new int[n];
+		
+		for(int i =0; i<n; i++){
+			arr[i] = r.nextInt(n*2);
+		}		
+	}
+	
+	private static void printuArrayuDesu(){
+		for(int i =0; i<n; i++){
+			System.out.print(arr[i] + ", ");
+		}
+		System.out.println(" ");
+	}
+	
+	private static void performSort(){
+		switch(method){
+			case 1: insertionSort(arr); break;
+		
+			case 2: quickSort(arr, 0, n-1); break;
+			
+			case 3: mergeSort(arr, 0, n-1); break;
+			
+			case 4: radixSort(arr, (int)Math.log10(n*2)+1); break;
+			
+			default: System.out.println("Hvordan kom du hit? plz tell");
+		}
 	}
 	
 	private static void scanInput(){
@@ -23,7 +63,7 @@ public class Main {
 		//do while og try catch for sjekk av input
 		do{
 			System.out.print("Hvilken methode skal brukes? (Velg tallnummer)");
-			System.out.print("\n1: Innstikk\n2: Quick\n3: Merge\n4: Radix");
+			System.out.print("\n1: Innstikk\n2: Quick\n3: Merge\n4: Radix\n");
 			try{ 
 				method = s.nextInt();
 				inputerror = false;
@@ -37,7 +77,7 @@ public class Main {
 		inputerror = true;
 		
 		do{
-			System.out.print("Velg antall tall som skal sorteres (min 2):");
+			System.out.print("Velg antall tall som skal sorteres (min 2): \n");
 			try{ 
 				n = s.nextInt(); 
 				inputerror = false;
@@ -53,7 +93,7 @@ public class Main {
 		
 		do{
 			System.out.print("Hva skal gjøres?: ");
-			System.out.print("\n1: Utføre sortering\n2: Estimere sortering\n3: Begge");
+			System.out.print("\n1: Utføre sortering\n2: Estimere sortering\n3: Begge\n");
 			try{ 
 				tempInt = s.nextInt();
 				inputerror = false;
@@ -116,7 +156,7 @@ public class Main {
 		}
     }
 	
-	private static int findPartition (int[] A, int min, int max)
+	public static int findPartition (int[] A, int min, int max)
 	{
 		int left, right;
 		int temp, partitionelement;
@@ -199,7 +239,7 @@ public class Main {
     }
 	
 	//Radix
-	public static void sort(int a[], int maksAntSiffer)
+	public static void radixSort(int a[], int maksAntSiffer)
     {
 		// Radixsortering av en array a med desimale heltall
 		// maksAntSiffer: Maksimalt antall siffer i tallene
