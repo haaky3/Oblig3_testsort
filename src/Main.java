@@ -1,10 +1,75 @@
+import java.util.Scanner;
+
 import jsjf.CircularArrayQueue;
 
 public class Main {
+	//Variabler
+	public static int method, n, tempInt;
+	public static boolean perform, estimate;
+	
 
 	public static void main(String[] args) {
-
+		//Scan input
+		scanInput();
+		//
 		
+	}
+	
+	private static void scanInput(){
+		boolean inputerror = true;
+		//Venter på input fra bruker, for å få inn noen variabler.
+		Scanner s = new Scanner(System.in);
+		
+		//do while og try catch for sjekk av input
+		do{
+			System.out.print("Hvilken methode skal brukes? (Velg tallnummer)");
+			System.out.print("\n1: Innstikk\n2: Quick\n3: Merge\n4: Radix");
+			try{ 
+				method = s.nextInt();
+				inputerror = false;
+			} 
+			catch(Exception e){
+				System.out.println("Feil!");
+				s.next();
+			}
+		} while (inputerror || method > 4 || method < 1);
+		
+		inputerror = true;
+		
+		do{
+			System.out.print("Velg antall tall som skal sorteres (min 2):");
+			try{ 
+				n = s.nextInt(); 
+				inputerror = false;
+			}
+			catch(Exception e){
+				System.out.println("Feil!");
+				s.next();
+			}
+		} while (inputerror || n < 2);
+		
+		inputerror = true;
+		
+		
+		do{
+			System.out.print("Hva skal gjøres?: ");
+			System.out.print("\n1: Utføre sortering\n2: Estimere sortering\n3: Begge");
+			try{ 
+				tempInt = s.nextInt();
+				inputerror = false;
+			}
+			catch(Exception e){
+				System.out.println("Feil!");
+				s.next();
+			}
+		} while (inputerror || tempInt >3 || tempInt <1);
+		
+		if(tempInt == 1){ perform = true; }
+		else if (tempInt == 2){ estimate = true; }
+		else { perform = true; estimate = true; }
+		
+		//Stopper inputscanneren
+		s.close();
 	}
 	
 	//Innstikk - Hentet fra forelesningsnotatene
