@@ -8,21 +8,26 @@ import jsjf.CircularArrayQueue;
 public class Main {
 	//Variabler
 	public static int method, n, tempInt;
-	public static boolean perform, estimate;
+	public static boolean perform, estimate, print = false;
 	public static int arr[];
-	
+	public static final double C_QUICK = 0.00002;
+	public static final double C_MERGE = 0.000032;
+	public static final double C_INSRT = 0.000000177;
+	public static final double C_RADIX = 0.0002;	
 
 	public static void main(String[] args) {
 		//Scan input
 		scanInput();
+		
 		//Opprett Array
-		makeArray();
+		if(estimate)
+			estimateSort();		
 		
-		printuArrayuDesu();
+		if(perform)	{
+			makeArray();
+			performSort();
+		}
 		
-		performSort();
-		
-		printuArrayuDesu();
 	}
 	
 	private static void makeArray(){
@@ -31,17 +36,45 @@ public class Main {
 		
 		for(int i =0; i<n; i++){
 			arr[i] = r.nextInt(n*2);
-		}		
+		}	
+		
+		if(print)
+			printArray();
 	}
 	
-	private static void printuArrayuDesu(){
+	private static void printArray(){
+		
+		
 		for(int i =0; i<n; i++){
+			if(i%30==0) System.out.println("");
+			
 			System.out.print(arr[i] + ", ");
+			
 		}
 		System.out.println(" ");
 	}
 	
+	private static void estimateSort(){
+		System.out.print("Estimeringen av sorteringen er: ");
+		
+		switch(method){
+		case 1: System.out.println(C_INSRT*(n^2)); break;
+	
+		case 2: System.out.println(C_QUICK*n*Math.log10(n)); break;
+		
+		case 3: System.out.println(C_MERGE*n*Math.log10(n)); break;
+		
+		case 4: System.out.println(C_RADIX*n); break;
+		
+		default: System.out.println("Hvordan kom du hit? plz tell");
+	}
+	}
+	
 	private static void performSort(){
+		
+		
+		long startSort = System.currentTimeMillis();
+		
 		switch(method){
 			case 1: insertionSort(arr); break;
 		
@@ -53,6 +86,13 @@ public class Main {
 			
 			default: System.out.println("Hvordan kom du hit? plz tell");
 		}
+		
+		long stopSort = System.currentTimeMillis();
+		
+		if(print)
+			printArray();
+		
+		System.out.println("Sorteringen tok: " + (stopSort - startSort) + " millisekunder.");
 	}
 	
 	private static void scanInput(){
@@ -108,6 +148,25 @@ public class Main {
 		else if (tempInt == 2){ estimate = true; }
 		else { perform = true; estimate = true; }
 		
+		// -------------------------------
+		String tempString = "";
+		if(perform){
+			do{
+				System.out.print("Skal arrayet printes ut(y/n)?: ");
+				try{ 
+					tempString = s.nextLine();
+					System.out.println(tempString);
+					inputerror = false;
+				}
+				catch(Exception e){
+					System.out.println("Feil!");
+					s.next();
+				}
+			} while (inputerror || (!tempString.equals("y") && !tempString.equals("n") && !tempString.equals("Y") && !tempString.equals("N")));
+			
+			if(tempString.equals("y") || tempString.equals("Y"))
+				print = true;
+		}
 		//Stopper inputscanneren
 		s.close();
 	}
