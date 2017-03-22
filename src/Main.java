@@ -1,15 +1,15 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.Random;
-import java.lang.*;
-
 import jsjf.CircularArrayQueue;
 
 public class Main {
 	//Variabler
-	public static int method, n, tempInt;
+	public static int method, n;
 	public static boolean perform, estimate, print = false;
 	public static int arr[];
+	
+	//Konstanter brukt under estimering. 
+	//Verdiene er generert via gjennomsnittet (100 tester) av tidenen til sorteringen.
 	public static final double C_QUICK = 0.00002;
 	public static final double C_MERGE = 0.000032;
 	public static final double C_INSRT = 0.000000177;
@@ -31,6 +31,7 @@ public class Main {
 	}
 	
 	private static void makeArray(){
+		//Oppretting av et array med tilfeldige genererte verdier som kan være dobbelt så stor som størrelsen på arrayet
 		Random r = new Random();
 		arr = new int[n];
 		
@@ -46,7 +47,8 @@ public class Main {
 		
 		
 		for(int i =0; i<n; i++){
-			if(i%30==0) System.out.println("");
+			if(i%30==0) 
+				System.out.println("");
 			
 			System.out.print(arr[i] + ", ");
 			
@@ -55,24 +57,28 @@ public class Main {
 	}
 	
 	private static void estimateSort(){
+		//Utregner estimert tid til den valgte sorteringsmetoden
 		System.out.print("Estimeringen av sorteringen er: ");
 		
 		switch(method){
-		case 1: System.out.println(C_INSRT*(n^2)); break;
-	
-		case 2: System.out.println(C_QUICK*n*Math.log10(n)); break;
+			case 1: System.out.print((int)Math.floor(C_INSRT*(n^2))); break;
 		
-		case 3: System.out.println(C_MERGE*n*Math.log10(n)); break;
+			case 2: System.out.print((int)Math.floor(C_QUICK*n*Math.log10(n))); break;
+			
+			case 3: System.out.print((int)Math.floor(C_MERGE*n*Math.log10(n))); break;
+			
+			case 4: System.out.print((int)Math.floor(C_RADIX*n)); break;
+			
+			default: System.out.println("Hvordan kom du hit? plz tell");
+		}
 		
-		case 4: System.out.println(C_RADIX*n); break;
+		System.out.println(" millisekunder");
 		
-		default: System.out.println("Hvordan kom du hit? plz tell");
-	}
 	}
 	
 	private static void performSort(){
-		
-		
+		//Starter sorteringenmetoden som er valgt
+		System.out.println("Starter sorteringen av array ...");
 		long startSort = System.currentTimeMillis();
 		
 		switch(method){
@@ -101,6 +107,8 @@ public class Main {
 		Scanner s = new Scanner(System.in);
 		
 		//do while og try catch for sjekk av input
+		
+		//Metode for sortering
 		do{
 			System.out.print("Hvilken methode skal brukes? (Velg tallnummer)");
 			System.out.print("\n1: Innstikk\n2: Quick\n3: Merge\n4: Radix\n");
@@ -116,6 +124,7 @@ public class Main {
 		
 		inputerror = true;
 		
+		//Størrelse på array
 		do{
 			System.out.print("Velg antall tall som skal sorteres (min 2): \n");
 			try{ 
@@ -130,7 +139,8 @@ public class Main {
 		
 		inputerror = true;
 		
-		
+		//Utføring/Estimering
+		int tempInt = 0;
 		do{
 			System.out.print("Hva skal gjøres?: ");
 			System.out.print("\n1: Utføre sortering\n2: Estimere sortering\n3: Begge\n");
@@ -148,14 +158,18 @@ public class Main {
 		else if (tempInt == 2){ estimate = true; }
 		else { perform = true; estimate = true; }
 		
-		// -------------------------------
-		String tempString = "";
+		
+		
+		//Utprinting
 		if(perform){
+			
+			inputerror = true;
+			String tempString = "";
+			
 			do{
-				System.out.print("Skal arrayet printes ut(y/n)?: ");
+				System.out.println("Skal arrayet printes ut? Dette tar lang tid for store verdier av n. (y/n): ");
 				try{ 
-					tempString = s.nextLine();
-					System.out.println(tempString);
+					tempString = s.next();
 					inputerror = false;
 				}
 				catch(Exception e){
@@ -195,7 +209,7 @@ public class Main {
 		}
     }
 		
-	//Quick
+	//Quick - Hentet fra forelesningsnotatene
 	public static void quickSort(int A[], int min, int max)
     {
 		// Quicksort av array med heltall
@@ -214,7 +228,7 @@ public class Main {
 		    quickSort(A, indexofpartition + 1, max);
 		}
     }
-	
+	//Henger med quicksort
 	public static int findPartition (int[] A, int min, int max)
 	{
 		int left, right;
@@ -255,7 +269,7 @@ public class Main {
 		return right;
 	}
 	
-	//Merge
+	//Merge - Hentet fra forelesningsnotatene
 	public static void mergeSort (int[] A, int min, int max)
     {
 	
@@ -297,7 +311,7 @@ public class Main {
 		}
     }
 	
-	//Radix
+	//Radix - Hentet fra forelesningsnotatene
 	public static void radixSort(int a[], int maksAntSiffer)
     {
 		// Radixsortering av en array a med desimale heltall
