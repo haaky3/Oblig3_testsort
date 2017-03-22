@@ -9,17 +9,16 @@ public class Main {
 	public static int arr[];
 	
 	//Konstanter brukt under estimering. 
-	//Verdiene er generert via gjennomsnittet (100 tester) av tidenen til sorteringen.
-	public static final double C_QUICK = 0.00002;
-	public static final double C_MERGE = 0.000032;
-	public static final double C_INSRT = 0.000000177;
-	public static final double C_RADIX = 0.0002;	
+	//Verdiene er generert via gjennomsnittet (100 tester) av tidenen (T) til sorteringen.
+	public static final double C_QUICK = 0.00002;     //C = T/n*log(n)
+	public static final double C_MERGE = 0.000032;    //C = T/n*log(n)
+	public static final double C_INSRT = 0.000000177; //C = T/n^2
+	public static final double C_RADIX = 0.0002;	  //C = T/n
 
 	public static void main(String[] args) {
-		//Scan input
+
 		scanInput();
 		
-		//Opprett Array
 		if(estimate)
 			estimateSort();		
 		
